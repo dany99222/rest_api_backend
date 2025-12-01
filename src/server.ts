@@ -4,12 +4,12 @@ import router from "./router";
 import db from "./config/db";
 
 // Conectar a base de datos
-async function connectDB() {
+export async function connectDB() {
   try {
 
     await db.authenticate();
     db.sync()
-    console.log(colors.blue.bold('Conexcion existosa'))
+    // console.log(colors.blue.bold('Conexcion existosa'))
   } catch (error) {
     console.log(error);
     console.log(colors.bgRed.bold("Hubo un error al conectar a la BD"));
@@ -25,5 +25,9 @@ server.use(express.json())
 
 // Sirve para utilizar los diferentes metodos de router
 server.use("/api/products", router);
+
+server.get('/api', (req, res)=>{
+  res.json({msg: 'Desde API'})
+})
 
 export default server;

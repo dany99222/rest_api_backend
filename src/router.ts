@@ -1,3 +1,4 @@
+import { handleInputErrors } from "./middleware/index";
 import { Router } from "express";
 import { body, param } from "express-validator";
 import {
@@ -8,7 +9,6 @@ import {
   updateProduct,
   updateProductPatch,
 } from "./handlers/product";
-import { handleInputErrors } from "./middleware";
 
 const router = Router();
 
@@ -38,6 +38,7 @@ router.post(
 router.put(
   "/:id",
   //Validacion en router (tambien se puede en handler)
+  param("id").isInt().withMessage("ID no valido"),
   body("name").notEmpty().withMessage("El nombre de producto es  necesario"),
   body("price")
     .isNumeric()
@@ -49,6 +50,7 @@ router.put(
   body("availability")
     .isBoolean()
     .withMessage("Valor para disponibilidad no valido"),
+  handleInputErrors,
   updateProduct
 );
 
